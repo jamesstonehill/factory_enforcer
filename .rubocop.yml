@@ -1,0 +1,22 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/LineLength:
+  Max: 80
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'factory_enforcer.gemspec'
+
+Style/Documentation:
+  Enabled: false<Paste>
