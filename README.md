@@ -1,8 +1,10 @@
 # FactoryEnforcer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/factory_enforcer`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Build Status](https://travis-ci.org/jamesstonehill/factory_enforcer.svg?branch=master)](https://travis-ci.org/jamesstonehill/factory_enforcer)
 
-TODO: Delete this and the text above, and describe your gem
+Worried that your lovely new factory class won't be used? Well, fear no more!
+FactoryEnforcer takes care of this for you and ensures that your factor is used
+when it should be.
 
 ## Installation
 
@@ -16,13 +18,27 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install factory_enforcer
-
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+# app/models/user.rb
+
+class User
+  extend FactoryEnforcer
+end
+
+class UserFactory
+  def self.build_user
+    User.new
+  end
+end
+
+# This will raise a FactoryEnforcer::FactoryNotUsed error!
+user = User.new
+
+# This will NOT raise an error.
+user = UserFactory.build_user
+```
 
 ## Development
 
@@ -32,7 +48,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/factory_enforcer.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jamesstonehill/factory_enforcer.
 
 ## License
 

@@ -23,11 +23,27 @@ module FactoryEnforcer
                 end
     end
 
-    def caller_pattern
-      /^#{location[0]}:\d:in\s`#{@method_name}'$/
+    def match_call_trace?(trace)
+      if in_irb?
+        return true if irb_pattern.match?(trace)
+      end
+
+      caller_pattern.match?(trace)
     end
 
     private
+
+    def caller_pattern
+      /^#{location[0]}:\d+:in\s`#{@method_name}'$/
+    end
+
+    def in_irb?
+      defined?(IRB)
+    end
+
+    def irb_pattern
+      /^\(irb\):\d+:in\s`#{@method_name}'$/
+    end
 
     def location
       @method.source_location

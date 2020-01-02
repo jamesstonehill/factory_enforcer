@@ -19,4 +19,4 @@ Metrics/BlockLength:
     - 'factory_enforcer.gemspec'
 
 Style/Documentation:
-  Enabled: false<Paste>
+  Enabled: false

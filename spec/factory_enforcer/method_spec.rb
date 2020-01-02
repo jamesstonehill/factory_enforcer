@@ -17,21 +17,26 @@ RSpec.describe FactoryEnforcer::Method do
     end
   end
 
-  describe "#caller_pattern" do
-    it "returns the instance method's location in the format that Kernel.caller does" do
+  describe "#match_call_trace?" do
+    it "returns true if the call trace matches the method location" do
+      call_trace ="#{factory_path}:3:in `build'"
       method = described_class.new(UserFactory, :build, instance_method: true)
-      expect(method.caller_pattern).to match("#{factory_path}:3:in `build'")
+
+      expect(method.match_call_trace?(call_trace)).to eq(true)
     end
 
-    it "returns the class method's location in the format that Kernel.caller does" do
-      method = described_class.new(UserFactory, :build, instance_method: false)
-      expect(method.caller_pattern).to match("#{factory_path}:7:in `build'")
+    xit "returns false if the call trace does not match the line number of the method location" do
+      call_trace ="#{factory_path}:999:in `build'"
+      method = described_class.new(UserFactory, :build, instance_method: true)
+
+      expect(method.match_call_trace?(call_trace)).to eq(false)
     end
 
-    it "does not match with the caller" do
-      method = described_class.new(UserFactory, :build, instance_method: false)
-      user_class_path = File.expand_path("spec/support/user.rb")
-      expect(method.caller_pattern).not_to match("#{user_class_path}:7:in `new'")
+    it "returns false if the call trace does not match the method name" do
+      call_trace ="#{factory_path}:3:in `foo'"
+      method = described_class.new(UserFactory, :build, instance_method: true)
+
+      expect(method.match_call_trace?(call_trace)).to eq(false)
     end
   end
 end

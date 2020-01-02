@@ -21,4 +21,32 @@ RSpec.describe FactoryEnforcer do
 
     expect { User.new }.not_to raise_error
   end
+
+  it "raises an error if it can not find a factory for the class" do
+    class ClassWithoutFactory
+      extend FactoryEnforcer
+    end
+
+    expect do
+      ClassWithoutFactory.new
+    end.to raise_error(FactoryEnforcer::FactoryClassNotFound)
+  end
+
+  it "allows you to define a custom factory class" do
+    class ClassWithCustomFactory
+      extend FactoryEnforcer
+
+      def self.factory_class
+        CustomFactory
+      end
+    end
+
+    class CustomFactory
+      def self.build
+        ClassWithCustomFactory.new
+      end
+    end
+
+    CustomFactory.build
+  end
 end
